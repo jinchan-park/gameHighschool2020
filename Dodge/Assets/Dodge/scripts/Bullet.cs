@@ -26,7 +26,7 @@ public class Bullet : MonoBehaviour
 
         if (m_Destroy <= 0)
         {
-            gameObject.SetActive(false);
+            Destroy(gameObject);
         }
 
     }

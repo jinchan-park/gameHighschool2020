@@ -23,8 +23,8 @@ public class playerController : MonoBehaviour
 
         float fireAxis = Input.GetAxis("Fire1");
 
-        if (fireAxis > 0.95f)
-            Die();
+        //if (fireAxis > 0.95f)
+        //    Die();
 
          /*if (Input.GetKey(KeyCode.LeftArrow))
          {
