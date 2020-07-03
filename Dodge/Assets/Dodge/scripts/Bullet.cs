@@ -5,21 +5,22 @@ using UnityEngine;
 public class Bullet : MonoBehaviour
 {
     // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-    
+
+    public Vector3 m_Velocity;
+
     public float m_speed = 13f;
 
-    public float m_Destroy = 5f;
+    public float m_Destroy = 8f;
 
+    
 
     // Update is called once per frame
     void Update()
     {
         Rigidbody rigidbody = gameObject.GetComponent<Rigidbody>();
 
+        rigidbody.velocity = m_Velocity * m_speed;
+        
         rigidbody.AddForce(transform.forward * m_speed);
 
         m_Destroy -= Time.deltaTime;
