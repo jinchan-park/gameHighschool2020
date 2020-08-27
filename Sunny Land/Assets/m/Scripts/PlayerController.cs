@@ -4,32 +4,54 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public Rigidbody2D m_RigidBody2D;
+    public Transform m_Sprite;
+
+    private Rigidbody2D m_Rigidbody2D;
 
     public float m_XAxisSpeed = 3f;
     public float m_YJumpPower = 3f;
-    void Start()
+
+    public int m_JumpCount = 0;
+
+    protected void Start()
     {
-        m_RigidBody2D = GetComponent<Rigidbody2D>();
+        m_Rigidbody2D = GetComponent<Rigidbody2D>();
     }
 
-    private void Update()
+    protected void Update()
     {
-        float xAis = Input.GetAxis("Horizontal");
-        float yAis = Input.GetAxis("Vertical");
+        float xAxis = Input.GetAxis("Horizontal");
+        float yAxis = Input.GetAxis("Vertical");
 
-        Vector2 velocity = m_RigidBody2D.velocity;
-        velocity.x = xAis * m_XAxisSpeed;
-        m_RigidBody2D.velocity = velocity;
+        Vector2 velocity = m_Rigidbody2D.velocity;
+        velocity.x = xAxis * m_XAxisSpeed;
+        m_Rigidbody2D.velocity = velocity;
 
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (xAxis > 0)
+            m_Sprite.localScale = new Vector3(1, 1, 1);
+        else if (xAxis < 0)
+            m_Sprite.localScale = new Vector3(-1, 1, 1);
+
+
+        if (Input.GetKeyDown(KeyCode.UpArrow)
+            && m_JumpCount <= 0)
         {
-            m_RigidBody2D.AddForce(Vector3.up * m_YJumpPower);
+            m_Rigidbody2D.AddForce(Vector3.up
+                * m_YJumpPower);
+
+            m_JumpCount++;
         }
-
-
-
     }
 
-
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        foreach (ContactPoint2D contact in collision.contacts)
+        {
+            Debug.DrawRay(contact.point, contact.normal, Color.white);
+            if (contact.normal.y > 0.5f)
+            {
+                m_JumpCount = 0;
+            }
+        }
+    }
 }
