@@ -1,21 +1,27 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    
     public Transform m_Sprite;
 
     private Rigidbody2D m_Rigidbody2D;
-
+    private Animator m_Animator;
     public float m_XAxisSpeed = 3f;
     public float m_YJumpPower = 3f;
+
+    public bool m_IsJumping = false;
+    public bool m_Climbing = false;
 
     public int m_JumpCount = 0;
 
     protected void Start()
     {
         m_Rigidbody2D = GetComponent<Rigidbody2D>();
+        m_Animator = GetComponent<Animator>();
     }
 
     protected void Update()
@@ -41,7 +47,19 @@ public class PlayerController : MonoBehaviour
 
             m_JumpCount++;
         }
+        m_Animator = GetComponent<Animator>();
+        var animator = GetComponent<Animator>();
+        animator.SetFloat("VelocityY", velocity.y);
+
+        m_IsJumping = Mathf.Abs(velocity.y) >= 0.1f ? true : false;
+
+        m_Animator.SetBool("Isjumping", m_IsJumping);
+        m_Animator.SetFloat("VelocityX", Mathf.Abs(xAxis));
+
+        m_Animator.SetFloat("Velocity", velocity.y);
+        
     }
+
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
