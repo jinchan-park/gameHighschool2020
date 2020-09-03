@@ -108,6 +108,13 @@ public class PlayerController : MonoBehaviour
         {
             m_IsTouchLadder = true;
         }
+        else if(collision.tag == "Item")
+        {
+            var item = collision.GetComponent<ItemComponet>();
+            if(item != null)
+                item.BeAte();
+
+        }
     }
     private void ClimbingExit()
     {
