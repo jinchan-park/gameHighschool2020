@@ -72,7 +72,7 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            //사다리 타느 도중의 이동기능
+            //사다리 타는 도중의 이동기능
             m_Rigidbody2D.constraints  = m_Rigidbody2D.constraints |  RigidbodyConstraints2D.FreezePosition;
 
             Vector3 movement = Vector3.zero;
@@ -90,14 +90,23 @@ public class PlayerController : MonoBehaviour
         }
     }
     
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         foreach (ContactPoint2D contact in collision.contacts)
         {
-            Debug.DrawRay(contact.point, contact.normal, Color.white);
-            if (contact.normal.y > 0.5f)
+            if(contact.normal.y > 0.5f)
             {
                 m_JumpCount = 0;
+                if(contact.rigidbody)
+                {
+                    var hp = contact.rigidbody.GetComponent<HPComponent>();
+                    if(hp)
+                    {
+                        Destroy(hp.gameObject);
+                    }
+
+                }
             }
         }
     }
