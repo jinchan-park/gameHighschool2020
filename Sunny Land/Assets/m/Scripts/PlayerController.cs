@@ -103,10 +103,18 @@ public class PlayerController : MonoBehaviour
                     var hp = contact.rigidbody.GetComponent<HPComponent>();
                     if(hp)
                     {
-                        Destroy(hp.gameObject);
+                        //Destroy(hp.gameObject);
+                        hp.TakeDamage(10);
                     }
 
                 }
+            }
+            else if(contact.rigidbody && contact.rigidbody.tag == "Enemy")
+            {
+                var hp = GetComponent<HPComponent>();
+                hp.TakeDamage(10);
+
+                m_Animator.SetTrigger("TakeDamage");
             }
         }
     }
